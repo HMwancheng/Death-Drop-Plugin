@@ -26,6 +26,7 @@ public class PluginConfig {
 
     // 连续死亡
     private boolean consecutiveEnabled;
+    private String consecutiveMode;
     private long windowSeconds;
     private TreeMap<Integer, Double> multiplierMap;
 
@@ -56,6 +57,7 @@ public class PluginConfig {
 
         ConfigurationSection cd = config.getConfigurationSection("consecutive-death");
         consecutiveEnabled = cd.getBoolean("enabled", true);
+        consecutiveMode = cd.getString("mode", "sliding").trim().toLowerCase();
         windowSeconds = cd.getLong("window-seconds", 120);
         multiplierMap = new TreeMap<>();
         ConfigurationSection mult = cd.getConfigurationSection("multiplier");
@@ -123,6 +125,8 @@ public class PluginConfig {
     public boolean isEnableDropBypass() { return enableDropBypass; }
 
     public boolean isConsecutiveEnabled() { return consecutiveEnabled; }
+    /** 连续死亡判定是否为“刷新式”，否则为“滑动窗口” */
+    public boolean isRefreshMode() { return "refresh".equals(consecutiveMode); }
     public long getWindowSeconds() { return windowSeconds; }
 
     public boolean isWhitelistEnabled() { return whitelistEnabled; }
