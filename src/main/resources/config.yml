@@ -1,0 +1,82 @@
+# =============================================
+#   DeathDrop 死亡掉落插件  配置文件
+# =============================================
+
+# =============== 掉落设置 ===============
+drop:
+  # 是否启用插件的掉落功能
+  enabled: true
+  # 基础掉落几率（百分比，0 - 100）
+  chance: 5
+  # 最终几率上限（百分比），防止连续死亡叠加后几率过高
+  max-chance: 100
+  # 是否跟随世界规则
+  #   false = 插件规则优先（默认）：插件按几率决定哪些“非白名单”物品掉落，
+  #           不受世界 keepInventory 设置影响（世界原本不掉落时按几率掉落；
+  #           世界原本全掉落时，未命中几率的物品仍保留在背包）。
+  #   true  = 跟随世界规则：仅当世界开启死亡不掉落(keepInventory=true)时，
+  #           插件掉落规则才生效；世界正常掉落时插件不干预。
+  follow-world-rule: false
+  # 背包容物是否逐件单独计算几率
+  #   true  = 背包内每个物品分别 roll 一次（例如一组50个泥土，10%几率，则50个逐个判定，
+  #           平均掉约5个，但掉落数量是随机的）
+  #   false = 按整组计算一次几率，命中则整组掉落
+  per-item: true
+  # 是否启用“完全免疫掉落”的权限 (deathdrop.drop.bypass)
+  enable-bypass-permission: true
+
+# =============== 连续死亡增加掉落几率 ===============
+# 玩家在短时间内连续死亡，掉落几率会按“死亡次数 -> 倍数”叠加
+consecutive-death:
+  enabled: true
+  # 判定连续死亡的时间窗口（秒），窗口内的死亡都计入次数
+  window-seconds: 120
+  # 死亡次数 -> 掉落几率倍数
+  # 死亡次数超过列表中最后一个时，按最后一个倍数计算
+  multiplier:
+    "1": 1.0
+    2: 1.5
+    3: 2.0
+    4: 2.5
+    5: 3.0
+
+# =============== 白名单物品 ===============
+# 白名单中的物品被插件视为“无法掉落”，插件完全不会去碰它们，
+# 它们的掉落与否跟随世界规则（keepInventory）。
+# 默认包含：鞘翅、龙蛋。
+# 下方注释中还列出了一些生存模式下完全无法再生（或极难再生）的可获取物品，
+# 需要时取消注释即可加入白名单。
+whitelist-item:
+  enabled: true
+  # 使用带命名空间的物品ID（小写，格式：命名空间:物品ID）
+  items:
+    # 鞘翅
+    - minecraft:elytra
+    # 龙蛋
+    - minecraft:dragon_egg
+
+  # ------- 生存模式下完全/基本无法再生的可获取物品（按需取消注释加入白名单） -------
+  #   龙头
+  #   - minecraft:dragon_head
+  #   远古残骸（下界合金碎片的来源，世界生成后不可再生）
+  #   - minecraft:ancient_debris
+  #   下界合金碎片
+  #   - minecraft:netherite_scrap
+  #   附魔金苹果（仅生成于结构战利品箱，不可再生）
+  #   - minecraft:enchanted_golden_apple
+  #   音乐唱片 Pigstep（来自猪灵堡垒，不可再生）
+  #   - minecraft:music_disc_pigstep
+
+# =============== 死亡后指令冷却 ===============
+# 玩家死亡后的一段时间内，无法使用以下指令
+death-command-cooldown:
+  # 是否启用指令冷却
+  enabled: true
+  # 从死亡时刻开始计算的冷却时长（秒）
+  cooldown-seconds: 30
+  # 冷却期间被禁止的指令（不要带前导“/”，做前缀匹配，如 back 会匹配 /back、/back:整体 等）
+  blocked-commands:
+    - back
+  # 玩家尝试使用被禁止指令时的提示（%seconds% = 剩余秒数）
+  block-message: "&c你刚刚死亡，请等待 &e%seconds% &c秒后再执行该指令！"
+  # 拥有权限 deathdrop.command.bypass 的玩家不受冷却限制

@@ -1,0 +1,24 @@
+name: DeathDrop
+version: "${pluginVersion}"
+main: com.deathdrop.DeathDropPlugin
+api-version: "1.21"
+description: 死亡掉落 + 死亡掉指令冷却插件
+authors: []
+
+commands:
+  deathdrop:
+    description: DeathDrop 主指令
+    usage: "/deathdrop reload"
+    aliases: [ dd ]
+    permission: deathdrop.admin
+
+permissions:
+  deathdrop.admin:
+    description: 允许使用 /deathdrop reload 重载配置
+    default: op
+  deathdrop.command.bypass:
+    description: 死亡后指令冷却免疫
+    default: false
+  deathdrop.drop.bypass:
+    description: 完全免除插件掉落（背包物品不会按几率掉落）
+    default: false
